@@ -7,6 +7,8 @@ ZSH=$HOME/.dotfiles/zsh/oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="robbyrussell"
 
+TERM=xterm-256color
+
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.dotfiles/zsh/oh-my-zsh"
