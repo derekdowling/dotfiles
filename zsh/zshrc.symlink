@@ -12,6 +12,7 @@ TERM=xterm-256color
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.dotfiles/zsh/oh-my-zsh"
+alias ack="ack-grep"
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
