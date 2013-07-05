@@ -16,6 +16,7 @@ TERM=xterm-256color
 #Some helpful aliases I have grown fond of:
 alias ack="ack-grep --smart-case"
 alias git co="git checkout"
+alias git pull submodules='git pull --recurse-submodules && git submodule update'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
