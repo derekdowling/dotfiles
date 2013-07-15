@@ -17,16 +17,17 @@ TERM=xterm-256color
 export MOVER_ENVIRONMENT=development
 export PATH=/usr/local/share/npm/bin:$PATH
 
-alias mover_env="echo $MOVER_ENVIRONMENT"
+alias mover_env='echo $MOVER_ENVIRONMENT'
 alias mover_dev="export MOVER_ENVIRONMENT=development"
 alias mover_prod="export MOVER_ENVIRONMENT=production"
 
 
 #Some helpful aliases I have grown fond of:
-alias ack="ack-grep --smart-case"
+alias ack="ack --smart-case"
 alias git co="git checkout"
 alias git pull submodules='git pull --recurse-submodules && git submodule update'
 alias mover="cd code/mover"
+alias playground="cd code/playground"
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
