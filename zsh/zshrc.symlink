@@ -38,6 +38,7 @@ alias git co="git checkout"
 alias git pull submodules='git pull --recurse-submodules && git submodule update'
 alias mover="cd ~/code/mover"
 alias playground="cd ~/code/playground"
+alias devbox="VAGRANT_CWD=/Users/derek/code/mover/chef vagrant $@"
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
