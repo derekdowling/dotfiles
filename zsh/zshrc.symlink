@@ -5,7 +5,7 @@ ZSH=$HOME/.dotfiles/zsh/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="alanpeabody"
 
 TERM=xterm-256color
 
@@ -19,6 +19,7 @@ PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -
 export EDITOR=vim
 
 #paths
+export TERM
 export MOVER_USER=deredowl
 export MOVER_KEY=~/.ssh/id_rsa
 export MOVER_ENVIRONMENT=development
@@ -26,6 +27,8 @@ export MOVER_ENVIRONMENT=development
 export SPORTSTER_ENVIRONMENT=development
 export SPORTSTER_PORT=7777
 
+export COMPOSER_HOME="$HOME/.composer"
+export PATH="$COMPOSER_HOME/vendor/bin":$PATH
 export PATH=/usr/local/share/npm/bin:$PATH
 
 alias mover_env='echo $MOVER_ENVIRONMENT'
