@@ -16,6 +16,8 @@ TERM=xterm-256color
 # TMUX STUFF
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 
+export LC_CTYPE=C 
+export LANG=C
 export EDITOR=vim
 
 #paths
@@ -27,9 +29,14 @@ export MOVER_ENVIRONMENT=development
 export SPORTSTER_ENVIRONMENT=development
 export SPORTSTER_PORT=7777
 
+export JAVA_HOME=$(/usr/libexec/java_home)
+export EC2_HOME=/usr/local/ec2/ec2-api-tools-1.7.1.1 
 export COMPOSER_HOME="$HOME/.composer"
 export PATH="$COMPOSER_HOME/vendor/bin":$PATH
 export PATH=/usr/local/share/npm/bin:$PATH
+export PATH="/Users/derek/pear/bin:/usr/local/php5/bin:$EC2_HOME/bin:$PATH"
+export AWS_ACCESS_KEY=AKIAITPW7RDMVMGJP3OQ
+export AWS_SECRET_KEY=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
 
 alias mover_env='echo $MOVER_ENVIRONMENT'
 alias mover_dev="export MOVER_ENVIRONMENT=development"
@@ -42,6 +49,7 @@ alias git pull submodules='git pull --recurse-submodules && git submodule update
 alias mover="cd ~/code/mover"
 alias playground="cd ~/code/playground"
 alias devbox="VAGRANT_CWD=/Users/derek/code/mover/chef vagrant $@"
+alias pjolt="MOVER_DATABASE=production MOVER_ENVIRONMENT=development /Users/derek/code/mover/backend/bin/jolt"
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
