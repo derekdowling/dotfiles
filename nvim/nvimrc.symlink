@@ -1,0 +1,245 @@
+" Derek Dowling's nvimrc
+"
+" Note: sure where a setting is being configured? `verbose set modeline?` for
+" example. `verbose map ,e' also works.
+"
+" Note: when committing this repo, sometimes the various git-managed submodules
+" turn out to have local changes that cause persistent untracked content
+" warnings in git (you keep seeing an uncomitted file that stubbornly refuses
+" to commit)
+"
+" See:
+" http://stackoverflow.com/questions/7993413/git-submodules-with-modified-and-untracked-content-why-and-how-to-remove-it
+"
+" Related:
+" http://stackoverflow.com/questions/5127178/gitignore-files-added-inside-git-submodules
+"
+" For powerline see: https://github.com/Lokaltog/powerline
+
+" Loads vim-plug :PlugInstall to install inside vim
+call plug#begin('~/.nvim/plugged')
+
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/syntastic'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'StanAngeloff/php.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'bling/vim-airline'
+Plug 'ciaranm/detectindent'
+
+call plug#end()
+
+" Makes the mapleader not so crappy.
+let mapleader = ","
+
+" Enable filetype specific configuration by placing files into
+" .nvim/ftplugin/{js,py,rb,etc}.vim
+filetype on
+
+" turns on syntastic for php and style checkers
+let g:syntastic_php_checkers = ['php', 'phpcs'] ", 'phpmd']
+let g:syntastic_aggregate_errors = 1
+" let g:syntastic_quiet_messages = { "type": "style" }
+
+" Note: for making terminal colors work in OSX:
+" http://stackoverflow.com/questions/3761770/iterm-vim-colorscheme-not-working
+
+set noswapfile
+
+" INDENTATION and syntax 
+set ai
+set ts=4 
+set sts=4 
+set sw=4
+"set mouse=a
+set number
+set hidden
+set expandtab
+syntax reset
+
+" Color Scheme
+syntax on
+set t_Co=256
+set background=dark
+colorscheme railscast
+filetype plugin indent on
+
+" Turn Mouse God Mode On For Terminal Vim
+set mouse=a
+
+" Using cake dev command from express-coffescript project instead.
+" au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
+" I have an aliases file with some login aliases.
+au BufNewFile,BufRead .*aliases set filetype=sh
+
+"http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
+set wildmode=longest,list,full
+set wildmenu
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! %!sudo tee > /dev/null %
+set backspace=indent,eol,start
+
+" CtrlP Settings
+" Instructions on ctrlp site, not sure what it's for:
+" http://kien.github.com/ctrlp.vim/
+set runtimepath^=~/.nvim/bundle/ctrlp.vim
+
+" Clear highlights from incsearch. using ,<space>
+nnoremap <leader><space> :noh<cr>
+
+" Ignore hidden directories because they usually slow things down.
+" Unless I'm in dotfiles.
+let g:ctrlp_custom_ignore = {
+      \ 'dir': '\v\.(dotfiles)@!(.*)$'
+      \ }
+
+" Add line without toggling insert mode above/below current line
+nnoremap <leader>O :<C-U>call append(line(".") -1, repeat([''], v:count1))<CR>
+nnoremap <leader>o :<C-U>call append(line("."), repeat([''], v:count1))<CR>
+
+" Some custom movement bindings I like
+nnoremap H 0
+nnoremap J 15j
+nnoremap K 15k
+nnoremap L $
+
+" Toggle NERDTree with ,t
+nmap <silent> <leader>t :NERDTreeToggle<CR>
+nmap <silent> <leader>r :NERDTreeFind<CR>
+
+" NERDCommenter Settings
+let NERDSpaceDelims=1 " place spaces after comment chars
+
+" Get rid of stuff that makes VIM vi compatible that is apparrently crappy?
+" See http://stevelosh.com/blog/2010/09/coming-home-to-vim/#using-the-leader
+set nocompatible
+" Security fix - remove modeline support.
+set modelines=0
+
+" Various display options.
+set ruler
+set showmode
+set showcmd
+set visualbell
+set cursorline
+set ttyfast
+set laststatus=2
+
+" Relative numbering instead of line numbering, use the ruler instead for
+" absolute.
+silent! set relativenumber
+" Creates an undofile that lets you conduct undoes after close and reopen.
+silent! set undofile
+" Makes searching better
+set ignorecase
+" Global substitution on by default. g now reverts to single sub.
+set gdefault
+" Starts to highlight partial search results.
+set incsearch
+" Briefy jump to matching closing brackets.
+" set showmatch super annoying
+set nohlsearch
+
+" Column wrapping
+set wrap
+set textwidth=79
+" See :help fo-table
+set formatoptions=qrn1
+silent! set colorcolumn=85
+
+nmap <silent><leader>f <c-p>
+
+" Toggle syntax numbering
+function! ToggleNumber()
+    if(&relativenumber)
+        set number
+    else
+        set relativenumber
+    endif
+endfunction
+nmap <silent><leader>l :call ToggleNumber()<CR>
+
+" Shift tab dedent
+nnoremap <s-tab> <<
+
+" Nice hack for exiting a mode
+inoremap jj <Esc>
+
+" Close the current buffer.
+nmap <silent> <leader>q :bdelete<CR>
+
+" Change paste "_ sets buffer to blackhole buffer, <C-R> loads register contents.
+" We assume the default register.
+nmap <silent> cp "_ciw<C-R>"<Esc>
+
+" Add php highlighting to Phakefiles
+au BufNewFile,BufRead Phakefile set filetype=php
+
+" Disable numbering for easier copy and paste
+" mnemonic: mouse disable
+" nnoremap <leader>md :set mouse=r<cr> :set nonumber<cr> :set norelativenumber<cr>
+" mnemonic: mouse visual
+"nnoremap <leader>mv :set mouse=v<cr> :set relativenumber<cr>
+" mouse all
+nnoremap <leader>m :set mouse=a<cr>
+" mouse none
+nnoremap <leader>M :set mouse=r<cr>
+
+" Buffer
+noremap <leader>y "*y 
+noremap <leader>p "*p 
+noremap <leader>P "*P 
+noremap <leader>dd "*dd
+vnoremap <leader>yy "*yy 
+vnoremap <leader>d "*d 
+
+" Rainbow paren
+nnoremap <leader>R :RainbowParenthesesToggle<cr>
+
+" Change variable to object notation for php
+nnoremap <leader>vo mZ viW :s/\v\$(.*)\[\'(.*)\'\]/$\1->\2/ <cr><esc>`Z:noh<cr>
+" Change variable to array notation for php
+nnoremap <leader>va mZ viW :s/\v\$([^\ \=]*)-\>([^\ \=]*)/$\1['\2']/ <cr><esc>`Z:noh<cr>
+" ca is used in nerdcommenter for changing comment types.
+let g:xml_syntax_folding=1
+au FileType glade setlocal foldmethod=syntax
+
+au BufRead,BufNewFile *.aliases set filetype=zsh
+
+" edit the .vimrc file rapidly
+nnoremap <leader>vr :e ~/.nvimrc<cr>
+
+" Create a scrolling boundary of 5 lines from top of the screen
+set so=5
+
+" Don't add eol.
+set noeol
+
+" NERDTree Tabs Config
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
+
+" Focus File Tree if folder opened, file, if file opened
+let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_smart_startup_focus=1
+let g:nerdtree_tabs_open_on_new_tab=1
+
+" Close current tab if there is only one window in it and it's NERDTree
+let g:nerdtree_tabs_autoclose=1
+
+:autocmd BufReadPost * :DetectIndent
+:let g:detectindent_preferred_expandtab=1
+:let g:detectindent_preferred_indent=4
+
+" PHP Syntax Highlighting
+function! PhpSyntaxOverride()
+    hi! def link phpDocTags  phpDefine
+    hi! def link phpDocParam phpType
+endfunction
+
+augroup phpSyntaxOverride
+    autocmd!
+    autocmd FileType php call PhpSyntaxOverride()
+augroup END

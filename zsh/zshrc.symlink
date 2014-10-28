@@ -9,16 +9,10 @@ ZSH_THEME="alanpeabody"
 
 TERM=xterm-256color
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.dotfiles/zsh/oh-my-zsh"
-
 # TMUX STUFF
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 
-export LC_CTYPE=C 
-export LANG=C
-export EDITOR=vim
+export EDITOR=nvim
 
 #paths
 export TERM
@@ -26,15 +20,14 @@ export MOVER_USER=deredowl
 export MOVER_KEY=~/.ssh/id_rsa
 export MOVER_ENVIRONMENT=development
 
-export SPORTSTER_ENVIRONMENT=development
-export SPORTSTER_PORT=7777
-
 export JAVA_HOME=$(/usr/libexec/java_home)
 export EC2_HOME=/usr/local/ec2/ec2-api-tools-1.7.1.1 
+export GOPATH=$HOME/code/bursa
 export COMPOSER_HOME="$HOME/.composer"
+export PATH=$PATH:$GOPATH/bin
 export PATH="$COMPOSER_HOME/vendor/bin":$PATH
-export PATH=/usr/local/share/npm/bin:$PATH
-export PATH="/Users/derek/pear/bin:/usr/local/php5/bin:$EC2_HOME/bin:$PATH"
+export PATH="$COMPOSER_HOME/vendor/bin":$PATH
+export PATH="/usr/local/nvm:$PATH"
 export AWS_ACCESS_KEY=AKIAITPW7RDMVMGJP3OQ
 export AWS_SECRET_KEY=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
 
@@ -43,39 +36,15 @@ alias mover_dev="export MOVER_ENVIRONMENT=development"
 alias mover_prod="export MOVER_ENVIRONMENT=production"
 
 #Some helpful aliases I have grown fond of:
+alias vim="nvim"
 alias ack="ack --smart-case"
 alias git co="git checkout"
 alias git pull submodules='git pull --recurse-submodules && git submodule update'
+alias bursa="cd ~/code/bursa"
 alias mover="cd ~/code/mover"
 alias playground="cd ~/code/playground"
 alias devbox="VAGRANT_CWD=/Users/derek/code/mover/chef vagrant $@"
 alias pjolt="MOVER_DATABASE=production MOVER_ENVIRONMENT=development /Users/derek/code/mover/backend/bin/jolt"
-
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
-
-# Comment this out to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment to change how often before auto-updates occur? (in days)
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want to disable command autocorrection
-# DISABLE_CORRECTION="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment following line if you want to disable marking untracked files under
-# VCS as dirty. This makes repository status check for large repositories much,
-# much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/

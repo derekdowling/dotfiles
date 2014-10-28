@@ -1,0 +1,6 @@
+snippet logi
+	error_log(__FILE__.'|'.__LINE__.':'.print_d($${1}));
+snippet exi
+	error_log(__FILE__.'|'.__LINE__.'|EXIT()');exit();
+snippet err
+	\Belt\Trace::debug($${1})
