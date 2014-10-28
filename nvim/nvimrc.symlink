@@ -21,6 +21,7 @@ call plug#begin('~/.nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
+Plug 'jistr/vim-nerdtree-tabs'
 Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'StanAngeloff/php.vim'
@@ -28,6 +29,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'bling/vim-airline'
 Plug 'ciaranm/detectindent'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'fatih/vim-go'
+Plug 'majutsushi/tagbar'
 
 call plug#end()
 
@@ -62,9 +66,15 @@ syntax reset
 " Color Scheme
 syntax on
 set t_Co=256
-set background=dark
-colorscheme railscast
+colorscheme railscast256
 filetype plugin indent on
+
+" Indent Guide Plugin Color Scheme
+let g:indent_guides_exclude_filetypes = ['nerdtree', 'tagbar']
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd ctermbg=236
+hi IndentGuidesEven ctermbg=235
+let g:indent_guides_enable_on_vim_startup=1
 
 " Turn Mouse God Mode On For Terminal Vim
 set mouse=a
@@ -149,6 +159,7 @@ set textwidth=79
 " See :help fo-table
 set formatoptions=qrn1
 silent! set colorcolumn=85
+hi ColorColumn ctermbg=236
 
 nmap <silent><leader>f <c-p>
 
@@ -164,6 +175,9 @@ nmap <silent><leader>l :call ToggleNumber()<CR>
 
 " Shift tab dedent
 nnoremap <s-tab> <<
+
+" Turns on Tabgar
+nmap <F8> :TagbarToggle<CR>
 
 " Nice hack for exiting a mode
 inoremap jj <Esc>
@@ -213,7 +227,7 @@ au BufRead,BufNewFile *.aliases set filetype=zsh
 nnoremap <leader>vr :e ~/.nvimrc<cr>
 
 " Create a scrolling boundary of 5 lines from top of the screen
-set so=5
+set so=4
 
 " Don't add eol.
 set noeol
@@ -243,3 +257,4 @@ augroup phpSyntaxOverride
     autocmd!
     autocmd FileType php call PhpSyntaxOverride()
 augroup END
+" End PHP Syntax Stuff
