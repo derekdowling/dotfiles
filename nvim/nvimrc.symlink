@@ -1,21 +1,10 @@
-" Derek Dowling's nvimrc
+" Derek Dowling's .nvimrc
 "
 " Note: sure where a setting is being configured? `verbose set modeline?` for
 " example. `verbose map ,e' also works.
 "
-" Note: when committing this repo, sometimes the various git-managed submodules
-" turn out to have local changes that cause persistent untracked content
-" warnings in git (you keep seeing an uncomitted file that stubbornly refuses
-" to commit)
+" Note: you can also view color scheme mappiings with `:highlight`
 "
-" See:
-" http://stackoverflow.com/questions/7993413/git-submodules-with-modified-and-untracked-content-why-and-how-to-remove-it
-"
-" Related:
-" http://stackoverflow.com/questions/5127178/gitignore-files-added-inside-git-submodules
-"
-" For powerline see: https://github.com/Lokaltog/powerline
-
 " Loads vim-plug :PlugInstall to install inside vim
 call plug#begin('~/.nvim/plugged')
 
@@ -32,6 +21,8 @@ Plug 'ciaranm/detectindent'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'fatih/vim-go'
 Plug 'majutsushi/tagbar'
+Plug 'mileszs/ack.vim'
+Plug 'honza/vim-snippets'
 
 call plug#end()
 
@@ -88,14 +79,10 @@ au BufNewFile,BufRead .*aliases set filetype=sh
 set wildmode=longest,list,full
 set wildmenu
 
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! %!sudo tee > /dev/null %
-set backspace=indent,eol,start
-
 " CtrlP Settings
 " Instructions on ctrlp site, not sure what it's for:
 " http://kien.github.com/ctrlp.vim/
-set runtimepath^=~/.nvim/bundle/ctrlp.vim
+set runtimepath^=~/.nvim/autoload/ctrlp.vim
 
 " Clear highlights from incsearch. using ,<space>
 nnoremap <leader><space> :noh<cr>
@@ -121,7 +108,7 @@ nmap <silent> <leader>t :NERDTreeToggle<CR>
 nmap <silent> <leader>r :NERDTreeFind<CR>
 
 " NERDCommenter Settings
-let NERDSpaceDelims=1 " place spaces after comment chars
+let NERDSpaceDelims=2 " place spaces after comment chars
 
 " Get rid of stuff that makes VIM vi compatible that is apparrently crappy?
 " See http://stevelosh.com/blog/2010/09/coming-home-to-vim/#using-the-leader
@@ -141,14 +128,19 @@ set laststatus=2
 " Relative numbering instead of line numbering, use the ruler instead for
 " absolute.
 silent! set relativenumber
+
 " Creates an undofile that lets you conduct undoes after close and reopen.
 silent! set undofile
+
 " Makes searching better
 set ignorecase
+
 " Global substitution on by default. g now reverts to single sub.
 set gdefault
+
 " Starts to highlight partial search results.
 set incsearch
+
 " Briefy jump to matching closing brackets.
 " set showmatch super annoying
 set nohlsearch
@@ -160,8 +152,6 @@ set textwidth=79
 set formatoptions=qrn1
 silent! set colorcolumn=85
 hi ColorColumn ctermbg=236
-
-nmap <silent><leader>f <c-p>
 
 " Toggle syntax numbering
 function! ToggleNumber()
@@ -181,9 +171,6 @@ nmap <F8> :TagbarToggle<CR>
 
 " Nice hack for exiting a mode
 inoremap jj <Esc>
-
-" Close the current buffer.
-nmap <silent> <leader>q :bdelete<CR>
 
 " Change paste "_ sets buffer to blackhole buffer, <C-R> loads register contents.
 " We assume the default register.
@@ -223,10 +210,7 @@ au FileType glade setlocal foldmethod=syntax
 
 au BufRead,BufNewFile *.aliases set filetype=zsh
 
-" edit the .vimrc file rapidly
-nnoremap <leader>vr :e ~/.nvimrc<cr>
-
-" Create a scrolling boundary of 5 lines from top of the screen
+" Create a scrolling boundary of 4 lines from top of the screen
 set so=4
 
 " Don't add eol.
