@@ -3,4 +3,4 @@ snippet logi
 snippet exi
 	error_log(__FILE__.'|'.__LINE__.'|EXIT()');exit();
 snippet err
-	\Belt\Trace::debug($${1})
+	\Belt\Trace::traceDepth(1)->debug($${1})

@@ -22,10 +22,15 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'fatih/vim-go'
 Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
-Plug 'honza/vim-snippets'
 Plug 'othree/html5.vim'
-Plug 'tpope/vim-haml'
-Plug 'jstemmer/gotags'
+Plug 'moll/vim-node'
+Plug 'SirVer/ultisnips'
+Plug 'klen/python-mode'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'wookiehangover/jshint.vim'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'editorconfig/editorconfig-vim'
 
 call plug#end()
 
@@ -34,12 +39,31 @@ let mapleader = ","
 
 " Enable filetype specific configuration by placing files into
 " .nvim/ftplugin/{js,py,rb,etc}.vim
-filetype on
+filetype plugin indent on
+
+" python
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8"
+" Auto check on save
+let g:pymode_lint_write = 1
+" Support virtualenv
+let g:pymode_virtualenv = 1
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_key = '<leader>pb'
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+let g:pymode_folding = 0
 
 " turns on syntastic for php and style checkers
 let g:syntastic_php_checkers = ['php', 'phpcs'] ", 'phpmd']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_mode_map = { 'passive_filetypes': ['sass', 'scss'] }
+let g:jsx_ext_required = 0
 
 " let g:syntastic_quiet_messages = { "type": "style" }
 
@@ -69,6 +93,7 @@ set mouse=a
 " au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 " I have an aliases file with some login aliases.
 au BufNewFile,BufRead .*aliases set filetype=sh
+autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 
 "http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
 set wildmode=longest,list,full
@@ -120,7 +145,6 @@ set laststatus=2
 syntax on
 set t_Co=256
 colorscheme molokai
-filetype plugin indent on
 
 " Airline Configuration
 let g:airline#extensions#tabline#enabled = 1
@@ -223,6 +247,9 @@ set noeol
 " NERDTree Tabs Config
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
+" Snippets
+let g:UltiSnipsExpandTrigger="<tab>"
+
 " Focus File Tree if folder opened, file, if file opened
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:nerdtree_tabs_smart_startup_focus=1
@@ -247,32 +274,3 @@ augroup phpSyntaxOverride
     autocmd FileType php call PhpSyntaxOverride()
 augroup END
 " End PHP Syntax Stuff
-
-" Go Tags + Tagbar
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\ }

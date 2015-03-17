@@ -1,10 +1,9 @@
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.dotfiles/zsh/oh-my-zsh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
+# Set name of the theme to load.  Look in ~/.oh-my-zsh/themes/ Optionally, if
+# you set this to "random", it'll load a random theme each time that oh-my-zsh
+# is loaded.
 ZSH_THEME="alanpeabody"
 
 TERM=xterm-256color
@@ -23,13 +22,17 @@ export MOVER_ENVIRONMENT=development
 export JAVA_HOME=$(/usr/libexec/java_home)
 export EC2_HOME=/usr/local/ec2/ec2-api-tools-1.7.1.1 
 export COMPOSER_HOME="$HOME/.composer"
-export GOPATH=$HOME/code/bursa
-export PATH=$PATH:$GOPATH/.godeps/bin
-export PATH="$COMPOSER_HOME/vendor/bin":$PATH
-export PATH="$COMPOSER_HOME/vendor/bin":$PATH
+export GOPATH=$HOME/code/go
+export BURSA_PATH=$GOPATH/src/github.com/derekdowling
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:"$COMPOSER_HOME/vendor/bin"
+export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="/usr/local/nvm:$PATH"
-export AWS_ACCESS_KEY=AKIAITPW7RDMVMGJP3OQ
-export AWS_SECRET_KEY=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
+export AWS_ACCESS_KEY=AKIAJFRKRFMHLULPBP4A
+export AWS_SECRET_KEY=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
+# Make sure that this is the last RVM related path to be added and that it is
+# prepended
+export PATH="/opt/chefdk/bin:$PATH"
 
 alias mover_env='echo $MOVER_ENVIRONMENT'
 alias mover_dev="export MOVER_ENVIRONMENT=development"
@@ -40,15 +43,17 @@ alias vim="nvim"
 alias ack="ack --smart-case"
 alias git co="git checkout"
 alias git pull submodules='git pull --recurse-submodules && git submodule update'
-alias bursa="cd ~/code/bursa"
+alias bursa="cd $BURSA_PATH/bursa"
+alias bursas="cd $BURSA_PATH/bursa_stack"
 alias mover="cd ~/code/mover"
 alias playground="cd ~/code/playground"
 alias devbox="VAGRANT_CWD=/Users/derek/code/mover/chef vagrant $@"
 alias pjolt="MOVER_DATABASE=production MOVER_ENVIRONMENT=development /Users/derek/code/mover/backend/bin/jolt"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
+# Which plugins would you like to load? (plugins can be found in
+# ~/.oh-my-zsh/plugins/*) Custom plugins may be added to
+# ~/.oh-my-zsh/custom/plugins/ Example format: plugins=(rails git textmate ruby
+# lighthouse)
 plugins=(git osx brew encode64 npm vagrant)
 
 source $ZSH/oh-my-zsh.sh
@@ -58,4 +63,23 @@ source $ZSH/oh-my-zsh.sh
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+got() {
+    abs_path=pwd
+    path=("${(s/go/)pwd}")
+    echo $path[0]
+    echo $path[1]
+    # go test $path[1]/$1
+}
+
+# "diner converge" in bursa_stack converges from anywhere in the dir
+diner() {
+    current=$(git rev-parse --show-toplevel)
+    (cd $current/cookbooks/bursa && kitchen $@)
+}
+
+# Instead of vagrant "hobo ssh" will ssh into bursa vm
+hobo() {
+    current=$(git rev-parse --show-toplevel)
+    VAGRANT_CWD=$current/cookbooks/bursa/.kitchen/kitchen-vagrant/default-ubuntu-1404
+    vagrant $@
+}
