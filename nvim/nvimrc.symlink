@@ -13,24 +13,24 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'StanAngeloff/php.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'bling/vim-airline'
 Plug 'ciaranm/detectindent'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'fatih/vim-go'
-Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
 Plug 'othree/html5.vim'
 Plug 'moll/vim-node'
-Plug 'SirVer/ultisnips'
 Plug 'klen/python-mode'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'wookiehangover/jshint.vim'
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'rodjek/vim-puppet'
+Plug 'Raimondi/delimitMate'
+Plug 'garbas/vim-snipmate'
+Plug 'marcweber/vim-addon-mw-utils'
+Plug 'SirVer/ultisnips'
+Plug 'cespare/vim-toml'
+Plug 'bling/vim-airline'
 
 call plug#end()
 
@@ -89,8 +89,6 @@ syntax reset
 " Turn Mouse God Mode On For Terminal Vim
 set mouse=a
 
-" Using cake dev command from express-coffescript project instead.
-" au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
 " I have an aliases file with some login aliases.
 au BufNewFile,BufRead .*aliases set filetype=sh
 autocmd BufRead,BufNewFile *.es6 setfiletype javascript
@@ -123,8 +121,14 @@ nnoremap J 15j
 nnoremap K 15k
 nnoremap L $
 
+" Split Management
+nnoremap <C-h> <C-W><C-H>
+set splitbelow
+set splitright
+
 " NERDCommenter Settings
 let NERDSpaceDelims=2 " place spaces after comment chars
+let NERDTreeIgnore = ['\.pyc$']
 
 " Get rid of stuff that makes VIM vi compatible that is apparrently crappy?
 " See http://stevelosh.com/blog/2010/09/coming-home-to-vim/#using-the-leader
@@ -154,9 +158,6 @@ let g:airline_theme = 'badwolf'
 " Relative numbering instead of line numbering, use the ruler instead for
 " absolute.
 silent! set relativenumber
-
-" Creates an undofile that lets you conduct undoes after close and reopen.
-silent! set undofile
 
 " Makes searching better
 set ignorecase
@@ -216,21 +217,8 @@ nnoremap <leader>m :set mouse=a<cr>
 " mouse none
 nnoremap <leader>M :set mouse=r<cr>
 
-" Buffer
-noremap <leader>y "*y 
-noremap <leader>p "*p 
-noremap <leader>P "*P 
-noremap <leader>dd "*dd
-vnoremap <leader>yy "*yy 
-vnoremap <leader>d "*d 
-
 " Rainbow paren
 nnoremap <leader>R :RainbowParenthesesToggle<cr>
-
-" Change variable to object notation for php
-nnoremap <leader>vo mZ viW :s/\v\$(.*)\[\'(.*)\'\]/$\1->\2/ <cr><esc>`Z:noh<cr>
-" Change variable to array notation for php
-nnoremap <leader>va mZ viW :s/\v\$([^\ \=]*)-\>([^\ \=]*)/$\1['\2']/ <cr><esc>`Z:noh<cr>
 
 " ca is used in nerdcommenter for changing comment types.
 let g:xml_syntax_folding=1
@@ -263,14 +251,9 @@ set listchars=tab:»-,trail:·,extends:>,precedes:<
 :let g:detectindent_preferred_expandtab=1
 :let g:detectindent_preferred_indent=4
 
-" PHP Syntax Highlighting
-function! PhpSyntaxOverride()
-    hi! def link phpDocTags  phpDefine
-    hi! def link phpDocParam phpType
-endfunction
+" Go Things
+let g:go_fmt_command = "goimports"
 
-augroup phpSyntaxOverride
-    autocmd!
-    autocmd FileType php call PhpSyntaxOverride()
-augroup END
-" End PHP Syntax Stuff
+if has("mac") || has("macunix")
+    set guifont=Monaco\ for\ Powerline:h24
+endif

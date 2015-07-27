@@ -1,85 +1,36 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.dotfiles/zsh/oh-my-zsh
+# Path to your oh-my-zsh installation.
+export ZSH=/Users/derekdowling/.oh-my-zsh
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
 
-# Set name of the theme to load.  Look in ~/.oh-my-zsh/themes/ Optionally, if
-# you set this to "random", it'll load a random theme each time that oh-my-zsh
-# is loaded.
-ZSH_THEME="alanpeabody"
-
-TERM=xterm-256color
-
-# TMUX STUFF
-PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+export TERM="xterm-256color"
+ZSH_THEME=amuse
 
 export EDITOR=nvim
 
-#paths
-export TERM
-export MOVER_USER=deredowl
-export MOVER_KEY=~/.ssh/id_rsa
-export MOVER_ENVIRONMENT=development
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
 
-export JAVA_HOME=$(/usr/libexec/java_home)
-export EC2_HOME=/usr/local/ec2/ec2-api-tools-1.7.1.1 
-export COMPOSER_HOME="$HOME/.composer"
-export GOPATH=$HOME/code/go
-export BURSA_PATH=$GOPATH/src/github.com/derekdowling
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:"$COMPOSER_HOME/vendor/bin"
-export PATH="$PATH:$HOME/.rvm/bin"
-export PATH="/usr/local/nvm:$PATH"
-export AWS_ACCESS_KEY=AKIAJFRKRFMHLULPBP4A
-export AWS_SECRET_KEY=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
-# Make sure that this is the last RVM related path to be added and that it is
-# prepended
-export PATH="/opt/chefdk/bin:$PATH"
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git, github, go, golang, brew, brew-cask, gitignore, history, virtualenvwrapper)
 
-alias mover_env='echo $MOVER_ENVIRONMENT'
-alias mover_dev="export MOVER_ENVIRONMENT=development"
-alias mover_prod="export MOVER_ENVIRONMENT=production"
+# User configuration
 
-#Some helpful aliases I have grown fond of:
-alias vim="nvim"
-alias ack="ack --smart-case"
-alias git co="git checkout"
-alias git pull submodules='git pull --recurse-submodules && git submodule update'
-alias bursa="cd $BURSA_PATH/bursa"
-alias bursas="cd $BURSA_PATH/bursa_stack"
-alias mover="cd ~/code/mover"
-alias playground="cd ~/code/playground"
-alias devbox="VAGRANT_CWD=/Users/derek/code/mover/chef vagrant $@"
-alias pjolt="MOVER_DATABASE=production MOVER_ENVIRONMENT=development /Users/derek/code/mover/backend/bin/jolt"
-
-# Which plugins would you like to load? (plugins can be found in
-# ~/.oh-my-zsh/plugins/*) Custom plugins may be added to
-# ~/.oh-my-zsh/custom/plugins/ Example format: plugins=(rails git textmate ruby
-# lighthouse)
-plugins=(git osx brew encode64 npm vagrant)
+# export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
+alias vim="nvim"
+alias scalerino="cd $GOPATH/src/code.justin.tv/systems/scalerino"
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-got() {
-    abs_path=pwd
-    path=("${(s/go/)pwd}")
-    echo $path[0]
-    echo $path[1]
-    # go test $path[1]/$1
-}
-
-# "diner converge" in bursa_stack converges from anywhere in the dir
-diner() {
-    current=$(git rev-parse --show-toplevel)
-    (cd $current/cookbooks/bursa && kitchen $@)
-}
-
-# Instead of vagrant "hobo ssh" will ssh into bursa vm
-hobo() {
-    current=$(git rev-parse --show-toplevel)
-    VAGRANT_CWD=$current/cookbooks/bursa/.kitchen/kitchen-vagrant/default-ubuntu-1404
-    vagrant $@
-}
+# Load in private env stuff
+. ~/.zshrcenv
