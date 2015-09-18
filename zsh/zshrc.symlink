@@ -33,4 +33,4 @@ alias vim="nvim"
 alias scalerino="cd $GOPATH/src/code.justin.tv/systems/scalerino"
 
 # Load in private env stuff
-. ~/.zshrcenv
+. ~/.shrc

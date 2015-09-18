@@ -11,7 +11,6 @@ call plug#begin('~/.nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
@@ -31,6 +30,8 @@ Plug 'marcweber/vim-addon-mw-utils'
 Plug 'SirVer/ultisnips'
 Plug 'cespare/vim-toml'
 Plug 'bling/vim-airline'
+Plug 'scrooloose/syntastic'
+Plug 'mustache/vim-mustache-handlebars'
 
 call plug#end()
 
@@ -59,13 +60,11 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_folding = 0
 
 " turns on syntastic for php and style checkers
-let g:syntastic_php_checkers = ['php', 'phpcs'] ", 'phpmd']
+let g:syntastic_go_checkers = ['go', 'golint', 'gotype', 'govet']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_mode_map = { 'passive_filetypes': ['sass', 'scss'] }
 let g:jsx_ext_required = 0
-
-" let g:syntastic_quiet_messages = { "type": "style" }
 
 " Note: for making terminal colors work in OSX:
 " http://stackoverflow.com/questions/3761770/iterm-vim-colorscheme-not-working
@@ -177,6 +176,8 @@ set wrap
 set textwidth=79
 " See :help fo-table
 set formatoptions=qrn1
+
+" Make the 80 char width column helper a sane color
 silent! set colorcolumn=85
 hi ColorColumn ctermbg=236
 
