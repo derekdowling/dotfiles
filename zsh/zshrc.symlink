@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/derekdowling/.oh-my-zsh
-export GOPATH=$HOME/go
+export GOPATH=/go
 export PATH=$PATH:$GOPATH/bin
 
 # Set name of the theme to load.
