@@ -33,6 +33,7 @@ Plug 'cespare/vim-toml'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'mustache/vim-mustache-handlebars'
+Plug 'fatih/vim-hclfmt'
 
 call plug#end()
 
@@ -205,8 +206,6 @@ inoremap jj <Esc>
 " We assume the default register.
 nmap <silent> cp "_ciw<C-R>"<Esc>
 
-" Add php highlighting to Phakefiles
-au BufNewFile,BufRead Phakefile set filetype=php
 au BufNewFile,BufRead *.tmpl set filetype=html
 
 " Disable numbering for easier copy and paste

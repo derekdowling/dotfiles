@@ -34,3 +34,5 @@ alias scalerino="cd $GOPATH/src/code.justin.tv/systems/scalerino"
 
 # Load in private env stuff
 . ~/.shrc
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
