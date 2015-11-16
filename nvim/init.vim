@@ -6,7 +6,7 @@
 " Note: you can also view color scheme mappiings with `:highlight`
 "
 " Loads vim-plug :PlugInstall to install inside vim
-call plug#begin('~/.nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
@@ -34,6 +34,7 @@ Plug 'bling/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'fatih/vim-hclfmt'
+Plug 'Shougo/deoplete.nvim'
 
 call plug#end()
 
@@ -44,7 +45,10 @@ let mapleader = ","
 " .nvim/ftplugin/{js,py,rb,etc}.vim
 filetype plugin indent on
 
-" python
+" For Deoplete TAB Completion
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" PYTHON
 let g:pymode_lint = 1
 let g:pymode_lint_checker = "pyflakes,pep8"
 " Auto check on save
@@ -254,6 +258,8 @@ set listchars=tab:»-,trail:·,extends:>,precedes:<
 
 " Go Things
 let g:go_fmt_command = "goimports"
+
+let g:deoplete#enable_at_startup = 1
 
 if has("mac") || has("macunix")
     set guifont=Monaco\ for\ Powerline:h24
