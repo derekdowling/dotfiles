@@ -1,7 +1,14 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/derekdowling/.oh-my-zsh
 export GOPATH=/go
+export GO15VENDOREXPERIMENT=1
 export PATH=$PATH:$GOPATH/bin
+
+# JENV exports
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
+alias dmeval='eval $(docker-machine env default)'
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -10,6 +17,7 @@ export PATH=$PATH:$GOPATH/bin
 export TERM="xterm-256color"
 ZSH_THEME=amuse
 
+alias vim="nvim"
 export EDITOR=nvim
 
 # Uncomment the following line if you want to change the command execution time
@@ -29,10 +37,10 @@ plugins=(git, github, go, golang, brew, brew-cask, gitignore, history, virtualen
 
 source $ZSH/oh-my-zsh.sh
 
-alias vim="nvim"
-alias scalerino="cd $GOPATH/src/code.justin.tv/systems/scalerino"
 
 # Load in private env stuff
 . ~/.shrc
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

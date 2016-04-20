@@ -5,13 +5,16 @@
 "
 " Note: you can also view color scheme mappiings with `:highlight`
 "
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+
 " Loads vim-plug :PlugInstall to install inside vim
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'ciaranm/detectindent'
@@ -34,9 +37,14 @@ Plug 'bling/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'fatih/vim-hclfmt'
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'terryma/vim-multiple-cursors'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'benekastah/neomake'
 
 call plug#end()
+
 
 " Makes the mapleader not so crappy.
 let mapleader = ","
@@ -46,9 +54,14 @@ let mapleader = ","
 filetype plugin indent on
 
 " For Deoplete TAB Completion
+let g:deoplete#enable_at_startup = 1
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-" PYTHON
+" LINTING
+" Run Neomake Linters on Save
+autocmd! BufWritePost * Neomake
+let g:neomake_javascript_enabled_makers = ['eslint']
+
 let g:pymode_lint = 1
 let g:pymode_lint_checker = "pyflakes,pep8"
 " Auto check on save
@@ -72,6 +85,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_mode_map = { 'passive_filetypes': ['sass', 'scss'] }
 let g:jsx_ext_required = 0
 
+let g:syntastic_ruby_checkers = ['rubocop', 'rubylint']
+
 " Note: for making terminal colors work in OSX:
 " http://stackoverflow.com/questions/3761770/iterm-vim-colorscheme-not-working
 
@@ -94,31 +109,21 @@ syntax reset
 " Turn Mouse God Mode On For Terminal Vim
 set mouse=a
 
-" I have an aliases file with some login aliases.
-au BufNewFile,BufRead .*aliases set filetype=sh
 autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 
 "http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
 set wildmode=longest,list,full
 set wildmenu
 
-" CtrlP Settings
-" Instructions on ctrlp site, not sure what it's for:
-" http://kien.github.com/ctrlp.vim/
-set runtimepath^=~/.nvim/autoload/ctrlp.vim
-
 " Clear highlights from incsearch. using ,<space>
 nnoremap <leader><space> :noh<cr>
-
-" Ignore hidden directories because they usually slow things down.
-" Unless I'm in dotfiles.
-let g:ctrlp_custom_ignore = {
-      \ 'dir': '\v\.(dotfiles)@!(.*)$'
-      \ }
 
 " Add line without toggling insert mode above/below current line
 nnoremap <leader>O :<C-U>call append(line(".") -1, repeat([''], v:count1))<CR>
 nnoremap <leader>o :<C-U>call append(line("."), repeat([''], v:count1))<CR>
+
+" File Fuzzy Finder Alias
+nnoremap <C-p> :FZF<ENTER>
 
 " Some custom movement bindings I like
 nnoremap H 0
@@ -154,6 +159,9 @@ set laststatus=2
 syntax on
 set t_Co=256
 colorscheme molokai
+
+" git commit formatting
+autocmd Filetype gitcommit spell textwidth=72
 
 " Airline Configuration
 let g:airline#extensions#tabline#enabled = 1
@@ -259,8 +267,9 @@ set listchars=tab:»-,trail:·,extends:>,precedes:<
 " Go Things
 let g:go_fmt_command = "goimports"
 
-let g:deoplete#enable_at_startup = 1
-
 if has("mac") || has("macunix")
     set guifont=Monaco\ for\ Powerline:h24
 endif
+
+" Tab Helpers
+nnoremap <Leader>t :tabe %<Enter>
