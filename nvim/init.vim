@@ -4,7 +4,8 @@
 " example. `verbose map ,e' also works.
 "
 " Note: you can also view color scheme mappiings with `:highlight`
-"
+
+" Make deoplete happy
 function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
@@ -38,6 +39,7 @@ Plug 'scrooloose/syntastic'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'fatih/vim-hclfmt'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'zchee/deoplete-go', { 'do': 'make'}
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -55,6 +57,8 @@ filetype plugin indent on
 
 " For Deoplete TAB Completion
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " LINTING
@@ -79,13 +83,15 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_folding = 0
 
 " turns on syntastic for php and style checkers
-let g:syntastic_go_checkers = ['go', 'golint', 'gotype', 'govet']
+let g:syntastic_go_checkers = ['go', 'golint', 'gotype', 'govet', 'errcheck']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_mode_map = { 'passive_filetypes': ['sass', 'scss'] }
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go', 'sass', 'scss'] }
 let g:jsx_ext_required = 0
 
 let g:syntastic_ruby_checkers = ['rubocop', 'rubylint']
+
+let g:go_list_type = "quickfix"
 
 " Note: for making terminal colors work in OSX:
 " http://stackoverflow.com/questions/3761770/iterm-vim-colorscheme-not-working
