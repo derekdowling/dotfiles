@@ -21,7 +21,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'ciaranm/detectindent'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'fatih/vim-go'
-Plug 'mileszs/ack.vim'
 Plug 'othree/html5.vim'
 Plug 'moll/vim-node'
 Plug 'klen/python-mode'
@@ -30,23 +29,24 @@ Plug 'pangloss/vim-javascript'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'rodjek/vim-puppet'
 Plug 'Raimondi/delimitMate'
-Plug 'garbas/vim-snipmate'
 Plug 'marcweber/vim-addon-mw-utils'
-Plug 'SirVer/ultisnips'
 Plug 'cespare/vim-toml'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'fatih/vim-hclfmt'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'carlitux/deoplete-ternjs'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'benekastah/neomake'
+Plug 'rking/ag.vim'
 
 call plug#end()
-
 
 " Makes the mapleader not so crappy.
 let mapleader = ","
@@ -55,27 +55,62 @@ let mapleader = ","
 " .nvim/ftplugin/{js,py,rb,etc}.vim
 filetype plugin indent on
 
-" For Deoplete TAB Completion
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+" Auto-Commands
+autocmd BufRead,BufNewFile *.es6,*.test.js,*.spec.js setfiletype javascript
+au BufNewFile,BufRead *.tmpl set filetype=html
+au BufRead,BufNewFile *.aliases set filetype=zsh
+:autocmd BufReadPost * :DetectIndent
+autocmd! BufWritePost * Neomake
+
+" Don't open first Ag value in buffer automatically
+ca Ag Ag!
 
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-" LINTING
-" Run Neomake Linters on Save
-autocmd! BufWritePost * Neomake
+" For Deoplete TAB Completion
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#ignore_sources = {}
+let g:deoplete#ignore_sources._ = ["neosnippet"]
+
+" See: https://github.com/Shougo/deoplete.nvim/issues/157
+" I want to use my tab more smarter. If we are inside a completion menu jump
+" to the next item. Otherwise check if there is any snippet to expand, if yes
+" expand it. Also if inside a snippet and we need to jump tab jumps. If none
+" of the above matches we just call our usual 'tab'.
+function! s:neosnippet_complete()
+  if pumvisible()
+    return "\<c-n>"
+  else
+    if neosnippet#expandable_or_jumpable() 
+      return "\<Plug>(neosnippet_expand_or_jump)"
+    endif
+    return "\<tab>"
+  endif
+endfunction
+
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+
+imap <expr><TAB> <SID>neosnippet_complete()
+
+" LINT/MAKE Options
+let g:go_fmt_autosave = 1
+let g:go_fmt_command = "goimports"
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'unconvert', 'gosimple']
+
+let g:neomake_open_list = 2
+let g:neomake_go_enabled_makers = []
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_scss_enabled_makers = ['scsslint']
 
 let g:pymode_lint = 1
 let g:pymode_lint_checker = "pyflakes,pep8"
-" Auto check on save
 let g:pymode_lint_write = 1
-" Support virtualenv
 let g:pymode_virtualenv = 1
-" Enable breakpoints plugin
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_key = '<leader>pb'
-" syntax highlighting
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
@@ -83,15 +118,16 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_folding = 0
 
 " turns on syntastic for php and style checkers
-let g:syntastic_go_checkers = ['go', 'golint', 'gotype', 'govet', 'errcheck']
+" let g:syntastic_go_checkers = ['gotype', 'errcheck']
+" let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go', 'sass', 'scss'] }
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go', 'sass', 'scss', 'html'] }
 let g:jsx_ext_required = 0
-
 let g:syntastic_ruby_checkers = ['rubocop', 'rubylint']
-
-let g:go_list_type = "quickfix"
 
 " Note: for making terminal colors work in OSX:
 " http://stackoverflow.com/questions/3761770/iterm-vim-colorscheme-not-working
@@ -115,7 +151,6 @@ syntax reset
 " Turn Mouse God Mode On For Terminal Vim
 set mouse=a
 
-autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 
 "http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
 set wildmode=longest,list,full
@@ -128,8 +163,12 @@ nnoremap <leader><space> :noh<cr>
 nnoremap <leader>O :<C-U>call append(line(".") -1, repeat([''], v:count1))<CR>
 nnoremap <leader>o :<C-U>call append(line("."), repeat([''], v:count1))<CR>
 
-" File Fuzzy Finder Alias
-nnoremap <C-p> :FZF<ENTER>
+" Shortcut for opening loclist
+nnoremap <leader>l :lopen<ENTER>
+
+" File Fuzzy Finder Alias plus fix to not open selection in NerdTree:
+" https://github.com/junegunn/fzf/issues/453
+nnoremap <silent> <expr> <C-p> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 
 " Some custom movement bindings I like
 nnoremap H 0
@@ -201,21 +240,8 @@ set formatoptions=qrn1
 silent! set colorcolumn=85
 hi ColorColumn ctermbg=236
 
-" Toggle syntax numbering
-function! ToggleNumber()
-    if(&relativenumber)
-        set number
-    else
-        set relativenumber
-    endif
-endfunction
-nmap <silent><leader>l :call ToggleNumber()<CR>
-
 " Shift tab dedent
 nnoremap <s-tab> <<
-
-" Turns on Tabgar
-nmap <F8> :TagbarToggle<CR>
 
 " Nice hack for exiting a mode
 inoremap jj <Esc>
@@ -224,7 +250,6 @@ inoremap jj <Esc>
 " We assume the default register.
 nmap <silent> cp "_ciw<C-R>"<Esc>
 
-au BufNewFile,BufRead *.tmpl set filetype=html
 
 " Disable numbering for easier copy and paste
 " mnemonic: mouse disable
@@ -236,14 +261,10 @@ nnoremap <leader>m :set mouse=a<cr>
 " mouse none
 nnoremap <leader>M :set mouse=r<cr>
 
-" Rainbow paren
-nnoremap <leader>R :RainbowParenthesesToggle<cr>
-
 " ca is used in nerdcommenter for changing comment types.
 let g:xml_syntax_folding=1
 au FileType glade setlocal foldmethod=syntax
 
-au BufRead,BufNewFile *.aliases set filetype=zsh
 
 " Create a scrolling boundary of 4 lines from top of the screen
 set so=4
@@ -254,9 +275,6 @@ set noeol
 " NERDTree Tabs Config
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
-" Snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-
 " Focus File Tree if folder opened, file, if file opened
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:nerdtree_tabs_smart_startup_focus=1
@@ -266,12 +284,8 @@ let g:nerdtree_tabs_autoclose=1
 " Indentation Helpers
 set list
 set listchars=tab:»-,trail:·,extends:>,precedes:<
-:autocmd BufReadPost * :DetectIndent
 :let g:detectindent_preferred_expandtab=1
 :let g:detectindent_preferred_indent=4
-
-" Go Things
-let g:go_fmt_command = "goimports"
 
 if has("mac") || has("macunix")
     set guifont=Monaco\ for\ Powerline:h24

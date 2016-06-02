@@ -37,7 +37,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Load in private env stuff
-. ~/.shrc
+. ~/.secretrc
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
@@ -49,6 +49,6 @@ dm () {
 }
 
 # Switch docker pointer to another host (dmenv my_remote_host)
-dmenv () {
+dmeval () {
   eval "$(docker-machine env $1)"
 }
