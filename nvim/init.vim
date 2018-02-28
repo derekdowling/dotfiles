@@ -43,8 +43,10 @@ Plug 'carlitux/deoplete-ternjs'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim',
 Plug 'benekastah/neomake'
 Plug 'rking/ag.vim'
+Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
@@ -117,9 +119,6 @@ let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_folding = 0
 
-" turns on syntastic for php and style checkers
-" let g:syntastic_go_checkers = ['gotype', 'errcheck']
-" let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
@@ -127,7 +126,6 @@ let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go', 'sass', 'scss', 'html'] }
 let g:jsx_ext_required = 0
-let g:syntastic_ruby_checkers = ['rubocop', 'rubylint']
 
 " Note: for making terminal colors work in OSX:
 " http://stackoverflow.com/questions/3761770/iterm-vim-colorscheme-not-working
@@ -237,7 +235,7 @@ set textwidth=79
 set formatoptions=qrn1
 
 " Make the 80 char width column helper a sane color
-silent! set colorcolumn=85
+silent! set colorcolumn=125
 hi ColorColumn ctermbg=236
 
 " Shift tab dedent
