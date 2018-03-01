@@ -8,7 +8,7 @@ Fork of: https://github.com/holman/dotfiles
 ## Install
 
 ```sh
-git clone ....
+git clone <ssh url> ~/.dotfiles
 cd ~/.dotfiles
 script/bootstrap
 ```
@@ -24,14 +24,25 @@ defaults, and so on. Tweak this script, and occasionally run `dot` from
 time to time to keep your environment fresh and up-to-date. You can find
 this script in `bin/`.
 
-### Vim
+### General
+```
+brew install git
+brew install nvm
+brew install yarn
+```
+
+### [NeoVim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
 ```
 brew install python3
-brew reinstall --HEAD neovim
+brew install neovim
 pip3 install neovim
-pip install neovim
+mkdir ~/.config
+ln -s /Users/<name>/.dotfiles/nvim /Users/<name>/.config/nvim
 ```
+
+### Github
+- [setup SSH key](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
 
 ## topical
 

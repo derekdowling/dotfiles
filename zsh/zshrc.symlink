@@ -1,7 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/dowderek/.dotfiles/oh-my-zsh
 export GOPATH=/go
-export GO15VENDOREXPERIMENT=1
 export PATH=$PATH:$GOPATH/bin
 
 # Set name of the theme to load.
@@ -33,10 +32,10 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Load in private env stuff
-. ~/.secretrc
+# . ~/.secretrc
 
-export PATH="$PATH:$HOME/.rbenv/bin:$PATH" # Add RVM to PATH for scripting
-eval "$(rbenv init -)"
+# export PATH="$PATH:$HOME/.rbenv/bin:$PATH" # Add RVM to PATH for scripting
+# eval "$(rbenv init -)"
 
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
